@@ -21,7 +21,10 @@ public class PopulateDropdown : MonoBehaviour {
 	public string CurrentDropdownValue;
 
 	private TestInstanstiation otherButton;
+
+	public int indexOfSelectedValue;
 	void Start () {
+		indexOfSelectedValue = 0; 
 		//get the files at the desired location, only with the extension .prefab
 		prefabDirectory = new DirectoryInfo("Assets/Prefabs");
 		FileInfo[] prefabInfo = prefabDirectory.GetFiles("*.prefab"); 
@@ -59,12 +62,14 @@ public class PopulateDropdown : MonoBehaviour {
 	//it is useful just to call when it is changed: 
 	void DropdownValueChanged(Dropdown change){
 
-		int indexOfSelectedValue = change.value; 
+		indexOfSelectedValue = change.value; 
 
 		CurrentPrefabSelected = menuOptions[indexOfSelectedValue].text.ToString(); 
 		Debug.Log("dropdown changed to: " + CurrentPrefabSelected); 
 
-		otherButton.yourButton.GetComponent<Button>().GetComponentInChildren<Text>().text = CurrentPrefabSelected; 
+
+	///THIS SETS THE BUTTON TO THE TEXT OF THE DROPDOWN 
+		otherButton.yourButton.GetComponent<Button>().GetComponentInChildren<Text>().text = "Place: " + CurrentPrefabSelected; 
 
 	}
 	 

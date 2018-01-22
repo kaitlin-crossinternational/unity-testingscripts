@@ -15,6 +15,10 @@
      // list that holds all created objects
      public List<GameObject> createdObjects = new List<GameObject>();
   
+    //private List <GameObject> availableObjects = new List<GameObject>();
+    //public static GameObject[] availableObjects; 
+    public static List <GameObject> myAvailablePrefabs = new List<GameObject>();
+
      public Button yourButton;
 
      public string buttonLabel; 
@@ -23,7 +27,7 @@
      public PopulateDropdown getDropdownValue; 
      private string dropdownValue;
 
-
+    public int prefabArrayIndex;
      public int counter; 
 
      void Start() {
@@ -37,33 +41,48 @@
         buttonLabel = "choose a model";
         yourButton.GetComponentInChildren<Text>().text = buttonLabel;
 
+    prefabArrayIndex = 0;
+            getDropdownValue =  GameObject.Find("prefabSelectorDropdown").GetComponent<PopulateDropdown>();
 
 
+    //need to look in the file directory for all the desired files, as in populatedropdown script
+    Object[] subListObjects = Resources.LoadAll("prefabs", typeof(GameObject));
+    foreach (GameObject subListObject in subListObjects){
+        GameObject myPrefabObjects = (GameObject)subListObject;
+        myAvailablePrefabs.Add(myPrefabObjects);
+    }
+        
      }
 
      void update (){
         //GameObject.Find("buttonName").GetComponentInChildren<Text>().text = "la di da";
-		Button btn = yourButton.GetComponent<Button>();
+		// Button btn = yourButton.GetComponent<Button>();
 
 
         
-        btn.GetComponentInChildren<Text>().text = buttonLabel;
+        // btn.GetComponentInChildren<Text>().text = buttonLabel;
 
-        getDropdownValue =  GameObject.Find("InstantiatePrefab").GetComponent<PopulateDropdown>();
-        dropdownValue = getDropdownValue.CurrentDropdownValue; 
-        buttonLabel = dropdownValue;
-        yourButton.GetComponentInChildren<Text>().text = buttonLabel;
+        // getDropdownValue =  GameObject.Find("InstantiatePrefab").GetComponent<PopulateDropdown>();
+        // dropdownValue = getDropdownValue.CurrentDropdownValue; 
+        // buttonLabel = dropdownValue;
+        // yourButton.GetComponentInChildren<Text>().text = buttonLabel;
 
 
 
      }
      void TaskOnClick() {
 
-        counter++; 
+         //get the dropdown script, to get the array index of the current object selected. 
+        // getDropdownValue =  GameObject.Find("prefabSelectorDropdown").GetComponent<PopulateDropdown>();
+        //prefabArrayIndex = 0; 
+        prefabArrayIndex = getDropdownValue.indexOfSelectedValue; 
+        Debug.Log("array index is: " + prefabArrayIndex);
+
+        //counter++; 
        // buttonLabel = getDropdownValue.GetComponent<PopulateDropdown>().CurrentDropdownValue.ToString(); 
         //Debug.Log(buttonLabel);
         Debug.Log("get the dropdown value and it is: " + dropdownValue);
-        yourButton.GetComponentInChildren<Text>().text = buttonLabel +" "+ counter.ToString() + dropdownValue;
+     //   yourButton.GetComponentInChildren<Text>().text = buttonLabel +" "+ counter.ToString() + dropdownValue;
 
       // buttonLabel = getDropdownValue.GetComponent<PopulateDropdown>().ToString(); 
 
