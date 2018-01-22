@@ -17,7 +17,7 @@
   
     //private List <GameObject> availableObjects = new List<GameObject>();
     //public static GameObject[] availableObjects; 
-    public static List <GameObject> myAvailablePrefabs = new List<GameObject>();
+    public List <GameObject> myAvailablePrefabs = new List<GameObject>();
 
      public Button yourButton;
 
@@ -46,12 +46,13 @@
 
 
     //need to look in the file directory for all the desired files, as in populatedropdown script
-    Object[] subListObjects = Resources.LoadAll("prefabs", typeof(GameObject));
+    Object[] subListObjects = Resources.LoadAll("Prefabs");
     foreach (GameObject subListObject in subListObjects){
         GameObject myPrefabObjects = (GameObject)subListObject;
         myAvailablePrefabs.Add(myPrefabObjects);
     }
-        
+            Debug.Log("added " + myAvailablePrefabs.Count + " prefabs to list"); 
+           // myAvailablePrefabs.siz
      }
 
      void update (){
@@ -73,33 +74,46 @@
      void TaskOnClick() {
 
          //get the dropdown script, to get the array index of the current object selected. 
-        // getDropdownValue =  GameObject.Find("prefabSelectorDropdown").GetComponent<PopulateDropdown>();
-        //prefabArrayIndex = 0; 
         prefabArrayIndex = getDropdownValue.indexOfSelectedValue; 
         Debug.Log("array index is: " + prefabArrayIndex);
 
         //counter++; 
-       // buttonLabel = getDropdownValue.GetComponent<PopulateDropdown>().CurrentDropdownValue.ToString(); 
         //Debug.Log(buttonLabel);
         Debug.Log("get the dropdown value and it is: " + dropdownValue);
-     //   yourButton.GetComponentInChildren<Text>().text = buttonLabel +" "+ counter.ToString() + dropdownValue;
 
-      // buttonLabel = getDropdownValue.GetComponent<PopulateDropdown>().ToString(); 
 
             if (createdObjects.Count == 0){
-		    if (equipPrefab != null){
+		    if (myAvailablePrefabs[prefabArrayIndex] != null){
              Vector3 position = new Vector3(0,0, 0);
  
              // instantiate the object
-             GameObject go = (GameObject)Instantiate(equipPrefab, position, Quaternion.identity);
+             GameObject go = (GameObject)Instantiate(myAvailablePrefabs[prefabArrayIndex], position, Quaternion.identity);
 			 go.transform.parent = GameObject.Find("PlaceHolderObject").transform;
              createdObjects.Add(go);
-                     Debug.Log("You have added a prefab");
+                     Debug.Log("You have added a prefab of index: " + prefabArrayIndex);
 
          	}
             }else{
-                //do nothing 
-                Debug.Log("model already present");
+
+                //remove first child of game object so that only one model displays at a time
+                Destroy(PlaceHolderObject.transform.GetChild(0).gameObject);
+
+                //when there is already a model present but you have selected a different model to place 
+            //                  Vector3 position = new Vector3(0,0, 0);;
+            //                  GameObject go = (GameObject)Instantiate(myAvailablePrefabs[prefabArrayIndex], position, Quaternion.identity);
+			//  go.transform.parent = GameObject.Find("PlaceHolderObject").transform;
+            //  createdObjects.Add(go);
+                createdObjects.RemoveAt(0);
+                Vector3 position = new Vector3(0,0, 0);
+
+                GameObject nextSculpture = (GameObject)Instantiate(myAvailablePrefabs[prefabArrayIndex], position, Quaternion.identity);
+                nextSculpture.transform.parent = GameObject.Find("PlaceHolderObject").transform;
+                Debug.Log("model already present, adding different model");
+                Debug.Log("You have added a prefab of index: " + prefabArrayIndex);
+
+                createdObjects.Add(nextSculpture);
+
+
             }
 			 	if (createdObjects.Count >= 2){
 				    foreach (Transform child in PlaceHolderObject.transform){

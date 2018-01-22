@@ -26,14 +26,14 @@ public class PopulateDropdown : MonoBehaviour {
 	void Start () {
 		indexOfSelectedValue = 0; 
 		//get the files at the desired location, only with the extension .prefab
-		prefabDirectory = new DirectoryInfo("Assets/Prefabs");
+		prefabDirectory = new DirectoryInfo("Assets/Resources/Prefabs");
 		FileInfo[] prefabInfo = prefabDirectory.GetFiles("*.prefab"); 
 
 		foreach (FileInfo f in prefabInfo){
 			string fileString = f.ToString();
 			//this specifically is filepath that needs to be considered: 
 			//manipulate the string to get just the name:
-			string shortFileString = fileString.Substring(82);
+			string shortFileString = fileString.Substring(92);
 			string fileNameString = shortFileString.Substring(0, shortFileString.Length-13);
 			createdObjects.Add(fileNameString);
 		}
